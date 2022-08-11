@@ -36,4 +36,15 @@ Finally, once CellTag reads have been parsed for each sample, we perform additio
 - A single population of cells has been split across multiple single cell library preps/ ports of the 10x chip.
 - Multiple samples have been collected from the same population of cells across time points and the user in interested in identifying clones both within and across time points.
 
-The first step for clone calling it to 
+The major steps of clone calling include:
+ - Filter, error-correct and allowlist CellTag Reads.
+ - Create the Cell x CellTag matrix, binarize, remove cells with too many and too few CellTags.
+ - Compute the cell-cell jaccard similarity matrix and identify clones.
+ - (Optional) Identify sparse clones and sub-cluster them into smaller high confidence clones.
+ - (Optional) Save additional clone metrics.
+ - Save the final clone table.
+ 
+Assessing outputs from the clone calling notebook:
+ - Sequencing saturation: An estimate of how deeply celltags have been sequenced. A high sequencing saturation (> 60%) is preferred.
+ - Clone table: This is a table that lists cells in clones and their respective clone IDs.
+ - QC plots: several plots for various QC metrics
