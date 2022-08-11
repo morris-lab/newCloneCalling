@@ -4,7 +4,7 @@
 #grep pattern to use for multi-v1 library: [ACTG]{3}GT[ACTG]{3}CT[ACTG]{3}AG[ACTG]{3}TG[ACTG]{3}CA[ACTG]{3}
 
 if (($# != 3)); then
-  echo invalid number of arguments, provide sample name followed by grep pattern and path to R1 fastq file
+  echo invalid number of arguments, please provide sample name followed by grep pattern and path to R1 fastq file
   exit
 fi
 
