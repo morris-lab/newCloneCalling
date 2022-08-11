@@ -12,19 +12,23 @@ CellTag constructs are made available as lentiviral plasmid libraries. While the
 The allowlist for the multi-v1 library used in our paper [link] has been provided in this repo at `misc_files/18N-multi-v1-allowlist.csv`. The allowlists for 8N-v1,v2 and v3 libraries have been made available on addgene (Most abundant barcodes): https://www.addgene.org/pooled-library/morris-lab-celltag/
 
 ## Parsing single-cell bam files to obtain CellTag reads
-The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file generated using CellRanger/CellRanger-ATAC. There are 2 modes for this analysis. In the single sample mode, users can directly run the provided Rscript with the required command line arguments. For processing multiple samples at once, we have provided a simple shell script that spawns multiple jobs in parallel, one for each sample to be analyzed. The shell script is compatible with a slurm based job submission system, please modify it as needed, to run with a different compute cluster manager.
+The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file. Currently, we only support CellRanger/CellRanger-ATAC but would be happy to support alternate single-cell pipelines per user request. The default workflow runs this analysis in batch mode, suitable for processing one or multiple bam files at once. In this a shell script spawns multiple jobs running the bam parsing R script in parallel, one for each sample. Alternatively, users can directly run the Rscipt, if they do not wish to use the batch mode. We have provided 2 versions of the shell script, one for running in bash and another for running on a slurm based cluster. 
 
-### Single sample mode
- - Run `cloneCalling_scripts/sample` with the following command line arguments:
-   - Sample name (avoid spaces, this will be prepended to the final output file)
-   - Path to cellranger bam file
-   - Path to list of valid cell barcodes as identified by cellranger (usually in `outs/filtered_feature_bc_matrix/barcodes.tsv.gz` for `RNA`)
-   - single-cell assay: only `rna` and `atac` are currently supported
-   - CellTag version to parse: one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1` 
-   - The clone calling pipeline allows for processing lineage barcodes outside of these 4 standard libraries. To process data from a custom lineage barcode, users can skip the CellTag version argument and instead specify the following three arguments:
-     - Lineage barcode grep pattern
-     - Expected length of lineage barcode
-     - additional secondary grep
+To perform bam parsing, you first need to create a CSV config file.
+
+| sample_id  | bam_file | cell_barcode | celltag_version |
+| ------------- | ------------- | ------- | ---- |
+| Content Cell  | Content Cell  | -- | -- |
+| Content Cell  | Content Cell  | -- | -- |
+
+Each row corresponds to one sample. Column descriptions:
+ - `sample_id` : sample name (avoid any spaces)
+ - `bam_file` : path to single-cell bam file
+ - `cell_barcode` : path to identified filtered cell barcodes
+ - `celltag_version`:  one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1`. Please check section xx if you would like to run this script with a custom lineage barcode.  
+
+
+Next, run `cloneCalling_scripts/sample <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Log files generated for each sample should be stored in the `logs/` folder.
 
 
 ## Processing CellTag reads to identify clones
