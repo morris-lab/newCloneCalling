@@ -11,6 +11,8 @@ CellTag constructs are made available as lentiviral plasmid libraries. While the
 
 The allowlist for the multi-v1 library used in our paper [link] has been provided in this repo at `misc_files/18N-multi-v1-allowlist.csv`. The allowlists for 8N-v1,v2 and v3 libraries have been made available on addgene (Most abundant barcodes): https://www.addgene.org/pooled-library/morris-lab-celltag/
 
+## Single-cell read alignment/CellRanger
+
 ## Parsing single-cell bam files to obtain CellTag reads
 The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file. Currently, we only support CellRanger/CellRanger-ATAC but would be happy to support alternate single-cell pipelines per user request. The default workflow runs this analysis in batch mode, suitable for processing one or multiple bam files at once. In this a shell script spawns multiple jobs running the bam parsing R script in parallel, one for each sample. Alternatively, users can directly run the Rscipt, if they do not wish to use the batch mode. We have provided 2 versions of the shell script, one for running in bash and another for running on a slurm based cluster. 
 
@@ -45,6 +47,6 @@ The major steps of clone calling include:
  - Save the final clone table.
  
 Assessing outputs from the clone calling notebook:
- - Sequencing saturation: An estimate of how deeply celltags have been sequenced. A high sequencing saturation (> 60%) is preferred.
+ - Sequencing saturation: An estimate of how deeply CellTags have been sequenced. A high sequencing saturation (> 60%) is preferred.
  - Clone table: This is a table that lists cells in clones and their respective clone IDs.
  - QC plots: several plots for various QC metrics
