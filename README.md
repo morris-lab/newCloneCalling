@@ -18,7 +18,7 @@ The first step of clone calling is to obtain reads containing the CellTag sequen
  - Run `cloneCalling_scripts/sample` with the following command line arguments:
    - Sample name (avoid spaces, this will be prepended to the final output file)
    - Path to cellranger bam file
-   - Path to list of valid cell barcodes as identified by cellranger (usually in `outs/filtered_feature_bc_matrix/barcodes.tsv.gz`)
+   - Path to list of valid cell barcodes as identified by cellranger (usually in `outs/filtered_feature_bc_matrix/barcodes.tsv.gz` for `RNA`)
    - single-cell assay: only `rna` and `atac` are currently supported
    - CellTag version to parse: one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1` 
    - The clone calling pipeline allows for processing lineage barcodes outside of these 4 standard libraries. To process data from a custom lineage barcode, users can skip the CellTag version argument and instead specify the following three arguments:
