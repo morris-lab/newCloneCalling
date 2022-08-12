@@ -49,4 +49,4 @@ The major steps of clone calling include:
 Assessing outputs from the clone calling notebook:
  - Sequencing saturation: An estimate of how deeply CellTags have been sequenced. A high sequencing saturation (> 60%) is preferred.
  - Clone table: This is a table that lists cells in clones and their respective clone IDs.
- - QC plots: several plots for various QC metrics
+ - QC plots: Plots for various CellTag QC metrics
