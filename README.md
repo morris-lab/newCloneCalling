@@ -20,8 +20,9 @@ To perform bam parsing, you first need to create a CSV config file.
 
 | sample_id  | bam_file | cell_barcode | assay | celltag_version |
 | ------------- | ------------- | ------- | ---- | --- |
-| Content Cell  | Content Cell  | -- | -- | --- |
-| Content Cell  | Content Cell  | -- | -- | --- |
+| sample1_RNA  | data/sample_1/outs/possorted_genome_bam.bam | data/sample_1/outs/filtered_feature_bc_matrix/barcodes.tsv.gz | RNA | multi-v1 |
+| sample1_ATAC  | data/sample_1_atac/outs/possorted_bam.bam | data/sample_1_atac/outs/filtered_peak_bc_matrix/barcodes.tsv | ATAC | multi-v1 |
+| sample2_RNA  | data/sample_2/outs/possorted_genome_bam.bam | data/sample_2/outs/filtered_feature_bc_matrix/barcodes.tsv.gz | RNA | multi-v1 |
 
 Each row corresponds to one sample. Column descriptions:
  - `sample_id` : sample name (avoid any spaces)
