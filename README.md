@@ -14,7 +14,7 @@ The allowlist for the multi-v1 library used in our paper [link] has been provide
 ## Single-cell read alignment/CellRanger
 
 ## Parsing single-cell bam files to obtain CellTag reads
-The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file. Currently, we only support CellRanger/CellRanger-ATAC but would be happy to support alternate single-cell pipelines per user request. The default workflow runs this analysis in batch mode, suitable for processing one or multiple bam files at once. In this a shell script spawns multiple jobs running the bam parsing R script in parallel, one for each sample. Alternatively, users can directly run the Rscipt, if they do not wish to use the batch mode. We have provided 2 versions of the shell script, one for running in bash and another for running on a slurm based cluster. 
+The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file. Currently, we only support outputs from CellRanger/CellRanger-ATAC but would be happy to support alternate single-cell pipelines per user request.
 
 To perform bam parsing, you first need to create a CSV config file.
 
@@ -30,11 +30,11 @@ Each row corresponds to one sample. Column descriptions:
  - `celltag_version`:  one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1`. Please check section xx if you would like to run this script with a custom lineage barcode.  
 
 
-Next, run `cloneCalling_scripts/sample <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Log files generated for each sample should be stored in the `logs/` folder.
+Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Log files generated for each sample should be stored in the `logs/` folder. Note: The script uses parallelization, it would greatly benefit from a higher processor/core count.
 
 
 ## Processing CellTag reads to identify clones
-Finally, once CellTag reads have been parsed for each sample, we perform additional filtering and clone calling. THe jupyter notebook `cloneCalling_scripts/sample` can be run to perform clone calling. Each of the steps have been outlines below. As with the bam parsing scripts, the clone calling notebook has been designed to process multiple files at once. A user might need to process multiple samples together if they expect clonally related cells across samples. This could happen in the following cases:
+Once CellTag reads have been parsed for each sample, we perform additional filtering and clone calling. THe jupyter notebook `cloneCalling_scripts/sample` can be run to perform clone calling. Each of the steps have been outlines below. As with the bam parsing scripts, the clone calling notebook has been designed to process multiple files at once. A user might need to process multiple samples together if they expect clonally related cells across samples. This could happen in the following cases:
 - A single population of cells has been split across multiple single cell library preps/ ports of the 10x chip.
 - Multiple samples have been collected from the same population of cells across time points and the user in interested in identifying clones both within and across time points.
 
