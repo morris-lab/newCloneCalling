@@ -18,10 +18,10 @@ The first step of clone calling is to obtain reads containing the CellTag sequen
 
 To perform bam parsing, you first need to create a CSV config file.
 
-| sample_id  | bam_file | cell_barcode | celltag_version |
-| ------------- | ------------- | ------- | ---- |
-| Content Cell  | Content Cell  | -- | -- |
-| Content Cell  | Content Cell  | -- | -- |
+| sample_id  | bam_file | cell_barcode | assay | celltag_version |
+| ------------- | ------------- | ------- | ---- | --- |
+| Content Cell  | Content Cell  | -- | -- | --- |
+| Content Cell  | Content Cell  | -- | -- | --- |
 
 Each row corresponds to one sample. Column descriptions:
  - `sample_id` : sample name (avoid any spaces)
