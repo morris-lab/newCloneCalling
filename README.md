@@ -30,7 +30,7 @@ Each row corresponds to one sample. Column descriptions:
  - `celltag_version`:  one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1`. Please check section xx if you would like to run this script with a custom lineage barcode.  
 
 
-Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Log files generated for each sample should be stored in the `logs/` folder. Note: The script uses parallelization, it would greatly benefit from a higher processor/core count.
+Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Note: The script uses parallelization, it would greatly benefit from a higher processor/core count.
 
 
 ## Processing CellTag reads to identify clones
