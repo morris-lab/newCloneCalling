@@ -37,6 +37,7 @@ Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This shoul
 Once CellTag reads have been parsed for each sample, we perform additional filtering and clone calling. THe jupyter notebook `cloneCalling_scripts/sample` can be run to perform clone calling. Each of the steps have been outlines below. As with the bam parsing scripts, the clone calling notebook has been designed to process multiple files at once. A user might need to process multiple samples together if they expect clonally related cells across samples. This could happen in the following cases:
 - A single population of cells has been split across multiple single cell library preps/ ports of the 10x chip.
 - Multiple samples have been collected from the same population of cells across time points and the user in interested in identifying clones both within and across time points.
+DO NOT process CellTag data obtained from two independently CellTagged cell populations together.
 
 The major steps of clone calling include:
  - Filter, error-correct and allowlist CellTag Reads.
