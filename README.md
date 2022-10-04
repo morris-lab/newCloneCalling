@@ -16,7 +16,7 @@ The allowlist for the multi-v1 library used in our paper [link] has been provide
 ## Parsing single-cell bam files to obtain CellTag reads
 The first step of clone calling is to obtain reads containing the CellTag sequence from the single-cell alignment file. Currently, we only support outputs from CellRanger/CellRanger-ATAC but would be happy to support alternate single-cell pipelines per user request.
 
-To perform bam parsing, you first need to create a CSV config file.
+To perform bam parsing, you first need to create a CSV config file (please ensure to include headers for each column as descibed below).
 
 | sample_id  | bam_file | cell_barcode | assay | celltag_version |
 | ------------- | ------------- | ------- | ---- | --- |
