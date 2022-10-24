@@ -1,5 +1,5 @@
 # newCloneCalling
-Repository detailing updated allowlisting and clonal analysis workflow compatible with CellTag-multi. More details in the pre-print [here](https://www.biorxiv.org/content/10.1101/2022.10.23.512790v1).
+Repository detailing updated allowlisting and clonal analysis workflow compatible with CellTag-multi., based on our previous [CellTagR](https://github.com/morris-lab/CellTagR) package. More details in the pre-print [here](https://www.biorxiv.org/content/10.1101/2022.10.23.512790v1).
 
 
 # Overview
