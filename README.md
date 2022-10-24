@@ -1,10 +1,10 @@
 # newCloneCalling
-Repository detailing updated allowlisting and clonal analysis workflow, name not final
+Repository detailing updated allowlisting and clonal analysis workflow compatible with CellTag-multi. More details in the pre-print [here](https://www.biorxiv.org/content/10.1101/2022.10.23.512790v1).
 
 
 # Overview
 ## Allowlisting plasmid library to obtain a list of allowed CellTag barcodes
-CellTag constructs are made available as lentiviral plasmid libraries. While the theoretical diversity of CellTags is very high (65,536 for the original tags and ~68 billion for the 18N libraries) the real barcode diversity in the plasmid library is limited due to bottlenecks during the process of synthesis, cloning etc. To identify CellTag barcodes present in the plasmid library, we perform an allowlisting step. The detailed methodology for generating sequencing libraries for allowlisting is described in our paper [link]. The following text outlines the computational workflow for processing the sequencing data:
+CellTag constructs are made available as lentiviral plasmid libraries. While the theoretical diversity of CellTags is very high (65,536 for the original tags and ~68 billion for the 18N libraries) the real barcode diversity in the plasmid library is limited due to bottlenecks during the process of synthesis, cloning etc. To identify CellTag barcodes present in the plasmid library, we perform an allowlisting step. The detailed methodology for generating sequencing libraries for allowlisting is described in our [paper](https://www.biorxiv.org/content/10.1101/2022.10.23.512790v1). The following text outlines the computational workflow for processing the sequencing data:
 - Obtain Read 1 (R1) fastq files for the 2 replicates and parse celltag reads from each by running the following script: `allowlisting_scripts/parse_fq_allowlisting.sh <sample name> <grep pattern> <path to R1 fastq file>`
 - Error correct identified CellTag barcodes using starcode (set distance threshold to 4): `allowlisting_scripts/starcode_collapse.sh <distance threshold> <path to output of parse_fq_allowlisting.sh>`
 - Use `allowlisting_scripts/create_allowlist.ipynb` to identify list of barcodes present in both replicates to obtain the final allowlist
@@ -28,7 +28,7 @@ Each row corresponds to one sample. Column descriptions:
  - `sample_id` : sample name (avoid any spaces)
  - `bam_file` : path to single-cell bam file
  - `cell_barcode` : path to identified filtered cell barcodes
- - `celltag_version`:  one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1`. Please check section xx if you would like to run this script with a custom lineage barcode.  
+ - `celltag_version`:  one of `8N-v1`,`8N-v2`,`8N-v3` or `multi-v1`. Support for custom lineage barcodes is coming soon!
 
 
 Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This should perform bam parsing for each sample in the config file and store outputs in the `celltag_reads/` folder. Note: The script uses parallelization, it would greatly benefit from a higher processor/core count.
