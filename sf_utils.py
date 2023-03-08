@@ -86,68 +86,58 @@ palette=sns.color_palette('Spectral', n_colors=101).as_hex()):
     return(corr_df)
 
 #simulator for homoplasy in celltagging data
-def find_homoplasy(n_cells, moi, barcode_abundance, ct_min=2, ct_max=25, return_celltag_sigs=False):
-    '''
-    Function to simulate rate of two unrelated cells getting the same celltag signature
-    n_cells: number of starting cells
-    moi: expected MOI of transduction
-    barcode_abundance: a dataframe with barcode names as index and relative abundance as first column
-    ct_min: minimum celltags/cell threshold
-    ct_max: maximum celltags/cell threshold
-    return_celltag_sigs: whether to return celltag signature dictionary
-    '''
-
+def find_homoplasy(n_cells, moi, barcode_abundance, ct_min=2, ct_max=25, n_iters=100):
     print("Simulating celltag data")
+    duplication_rate_list = []
+    
+    for iteration_curr in range(n_iters):
+        if(iteration_curr%10==0):
+            print(f"Iteration: {iteration_curr}")
+    
+        #simulate n_cells
+        cells = np.random.poisson(moi, n_cells)
 
-    #simulate n_cells
-    cells = np.random.poisson(moi, n_cells)
+        #filter out cells outside ct_min and ct_max constraints
+        filter_1 = cells >= ct_min
+        filter_2 = cells <= ct_max
 
-    #filter out cells outside ct_min and ct_max constraints
-    filter_1 = cells >= ct_min
-    filter_2 = cells <= ct_max
+        filter_final = filter_1 & filter_2
+        cells = cells[filter_final]
+        # print(len(cells))
 
-    filter_final = filter_1 & filter_2
-    cells = cells[filter_final]
-    # print(len(cells))
+        #assign tags to each cell
+        celltag_sigs = {}
+        seen_lens = set()
 
-    #assign tags to each cell
-    celltag_sigs = {}
-    seen_lens = set()
+        # print("Generating CellTag signatures")
+        for i in range(len(cells)):
+            #simulate a celltag signature based on barcode abundance
+            celltag_sig_curr = np.sort(np.random.choice(barcode_abundance.index, size=cells[i], p=barcode_abundance.iloc[:,0]))
+            celltag_sig_curr = "/".join(celltag_sig_curr)
 
-    print("Generating CellTag signatures")
-    for i in range(len(cells)):
-        #simulate a celltag signature based on barcode abundance
-        celltag_sig_curr = np.sort(np.random.choice(barcode_abundance.index, size=cells[i], p=barcode_abundance.iloc[:,0]))
-        celltag_sig_curr = "/".join(celltag_sig_curr)
+            #add sorted signature to dict - based on length of signature
+            if(cells[i] in celltag_sigs.keys()):
+                celltag_sigs[cells[i]].append(celltag_sig_curr)
+            else:
+                celltag_sigs[cells[i]] = []
+                celltag_sigs[cells[i]].append(celltag_sig_curr)
 
-        #add sorted signature to dict - based on length of signature
-        if(cells[i] in celltag_sigs.keys()):
-            celltag_sigs[cells[i]].append(celltag_sig_curr)
-        else:
-            celltag_sigs[cells[i]] = []
-            celltag_sigs[cells[i]].append(celltag_sig_curr)
+        #check duplication rates
+        # print("Checking for duplicates")
+        net_dup_pairs = 0
+        for i in celltag_sigs.keys():
+            df_curr = pd.DataFrame(celltag_sigs[i])
+            df_count = df_curr.value_counts()
+            df_count = df_count[df_count > 1].copy()
 
-    #check duplication rates
-    print("Checking for duplicates")
-    net_dup_pairs = 0
-    for i in celltag_sigs.keys():
-        df_curr = pd.DataFrame(celltag_sigs[i])
-        df_count = df_curr.value_counts()
-        df_count = df_count[df_count > 1].copy()
-
-        if(len(df_count) > 0):
-            dup_pairs = sum([comb(x,2) for x in df_count.values])
-            net_dup_pairs += dup_pairs
-            print(f"Duplicate pairs ({i} celltags/cell): {dup_pairs}")
-    if(net_dup_pairs > 0):
-        print(f"Total duplication rate: {net_dup_pairs/comb(len(cells),2)}\n")
-    else:
-        print("No duplicates found\n")
-
-
+            if(len(df_count) > 0):
+                dup_pairs = sum([comb(x,2) for x in df_count.values])
+                net_dup_pairs += dup_pairs
+                # print(f"Duplicate pairs ({i} celltags/cell): {dup_pairs}")
+        duplication_rate_list.append(net_dup_pairs/comb(len(cells),2))
+    
     print("Finished!")
-    if(return_celltag_sigs):
-        return(celltag_sigs)
+    return(duplication_rate_list)
 
 
 def plot_trajectories_large(adata,emb_name, rep_clones, de_clones, clone_table, rep_col,
