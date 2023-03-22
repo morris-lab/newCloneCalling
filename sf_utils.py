@@ -19,7 +19,92 @@ import shap
 import pickle
 from math import comb
 
+import cassiopeia as cas
+from cassiopeia.critique.critique_utilities import get_outgroup
 
+def get_information_triplets(static_tree):
+    '''
+    Create informative triplets from a casseopiea tree. An informative triplet is one with defined out group.
+    Inputs: casseopiea tree object
+    Outputs: list of leaf triplets along with outgroup
+    '''
+    
+    #omits all triplets with 3 root connected leaves
+    root_connected_leaves = list(filter(lambda x:static_tree.parent(x) == static_tree.root, static_tree.leaves))
+    non_root_connected_leaves = list(filter(lambda x:static_tree.parent(x) != static_tree.root, static_tree.leaves))
+    
+    print("Omitting all triplets with 3 root connected leaves")
+    triplet_list = []
+    triplet_log = []
+
+    #possible triplets: 1 root + 2 non-root; 2 root + 1 non-root; 3 non-root
+
+    # 1 root + 2 non-root
+    triplets = list(itertools.combinations(non_root_connected_leaves, 2))
+    for i in itertools.product(root_connected_leaves, triplets):
+        triplet_curr = [i[0],i[1][0],i[1][1]]
+        triplet_curr = np.sort(triplet_curr)
+        triplet_curr_str = "/".join(triplet_curr)
+
+        #find out grp
+        out_grp = get_outgroup(static_tree, tuple(triplet_curr))
+
+        #if out group is not null add to list of triplets
+        if(out_grp!="None"):
+            triplet_list.append([triplet_curr, out_grp])
+    print("Done case 1: 1 root + 2 non-root leaves")
+
+    # 2 root + 1 non-root
+    triplets = list(itertools.combinations(root_connected_leaves, 2))
+    for i in itertools.product(non_root_connected_leaves, triplets):
+        triplet_curr = [i[0],i[1][0],i[1][1]]
+        triplet_curr = np.sort(triplet_curr)
+        triplet_curr_str = "/".join(triplet_curr)
+
+        #find out grp
+        out_grp = get_outgroup(static_tree, tuple(triplet_curr))
+
+        #if out group is not null add to list of triplets
+        if(out_grp!="None"):
+            triplet_list.append([triplet_curr, out_grp])
+    print("Done case 2: 2 root + 1 non-root leaves")
+
+    # 3 non-root      
+    for i in itertools.combinations(non_root_connected_leaves, 3):
+        triplet_curr = i
+        triplet_curr = np.sort(triplet_curr)
+        triplet_curr_str = "/".join(triplet_curr)
+
+        #find out grp
+        out_grp = get_outgroup(static_tree, tuple(triplet_curr))
+
+        #if out group is not null add to list of triplets
+        if(out_grp!="None"):
+            triplet_list.append([triplet_curr, out_grp])
+    print("Done case 3: 3 non-root leaves")
+    
+    return(triplet_list)
+
+
+def compare_triplet_accuracy(triplet_list, new_tree):
+    '''
+    Compare accuracy of outgroup calling between an existing tree and a new tree. Takes output of 'get_information_triplets' as input.
+    Inputs: leaf triplet-outgroup list from 'get_information_triplets'; Casseopiea object of tree to test.
+    Outputs: percentage of correct outgroup matches between new and existing tree
+    '''
+    match_list = []
+    for i in triplet_list:
+        ter_outgrp = get_outgroup(new_tree, i[0])
+
+        if(ter_outgrp!='None'):
+            match_list.append([i[1] == ter_outgrp])
+    match_list = np.array(match_list).flatten()
+
+    return(sum(match_list)/len(match_list))
+
+
+
+### NON-TREE FUNCTIONS ###
 def shap_loader(file_addr, mode='rb'):
     with open(file_addr, mode) as f:
         return(pickle.load(f))
