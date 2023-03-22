@@ -21,8 +21,9 @@ from math import comb
 
 import cassiopeia as cas
 from cassiopeia.critique.critique_utilities import get_outgroup
+import itertools
 
-def get_information_triplets(static_tree):
+def get_informative_triplets(static_tree):
     '''
     Create informative triplets from a casseopiea tree. An informative triplet is one with defined out group.
     Inputs: casseopiea tree object
