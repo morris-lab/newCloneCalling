@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import igraph as ig
 import scipy
-import upsetplot
 
 import adjustText
 import seaborn as sns
@@ -299,7 +298,7 @@ def plot_size_by_den(clone_meta, red_clones=None, green_clones=None, ax=None, **
 
     return(ax)
 
-def plot_clone_upset(clone_table, fname, days=['D3','D12','D21'], title="", **kwargs):
+#def plot_clone_upset(clone_table, fname, days=['D3','D12','D21'], title="", **kwargs):
     '''
         This function creates an upset plot from clone table, based on the "day" label. Expects "day" and "clone.id" in clone table. Saves
         output file as a pdf
