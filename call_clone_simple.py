@@ -1,11 +1,12 @@
 import pandas as pd
 import numpy as np
+import os
 
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import seaborn as sns
 import clone_calling_fn as cc
-
+import scipy
 
 from scipy import io
 
@@ -17,7 +18,7 @@ METRIC_LOW = 1
 METRIC_HIGH = 25
 
 #Create list of files to import for celltag matrix
-KEYS = ['sample1_RNA','sample2_RNA']
+KEYS = ['cmix3']
 
 ct_reads_list = []
 
@@ -138,7 +139,7 @@ fig.tight_layout()
 
 #write files to disk
 plt.savefig("./metric_filter_QC_plots.pdf")
-clones.write.csv("./clones.csv")
+clones.to_csv("./clones.csv")
 
 
 
