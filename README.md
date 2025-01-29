@@ -36,7 +36,7 @@ Next, run `cloneCalling_scripts/bam_parsing.R <path to config file>`. This shoul
 
 ## Processing CellTag reads to identify clones
 
-UPDATE: Celltag-tools, a python based software package is now available to run clonal analysis and is available [here](https://github.com/jindalk/celltag_tools/tree/main).
+**UPDATE: Celltag-tools, a python based software package is now available to run clonal analysis and is available [here](https://github.com/jindalk/celltag_tools/tree/main).\n**
 Once CellTag reads have been parsed for each sample, we perform additional filtering and clone calling. THe jupyter notebook `cloneCalling_scripts/celltag_analysis_single_assay.ipynb` can be run to perform clone calling. Each of the steps have been outlines below. As with the bam parsing scripts, the clone calling notebook has been designed to process multiple files at once. A user might need to process multiple samples together if they expect clonally related cells across samples. This could happen in the following cases:
 - A single population of cells has been split across multiple single cell library preps/ ports of the 10x chip.
 - Multiple samples have been collected from the same population of cells across time points and the user is interested in identifying clones both within and across time points.
